@@ -19,7 +19,7 @@ from webbrowser import open_new_tab
                 )/' _/     \   `-_,   /             
                 `-'" `"\_  ,_.-;_.-\_ ',          
                     _.-'_./   {_.'   ; /           
-                   {_.-``-'         {_/ v1.2    
+                   {_.-``-'         {_/ v1.3    
 
 
 '''
@@ -171,6 +171,7 @@ if __name__ == "__main__":
         if o == '-':
             with open("NOVVAE_PERSISTENCE.txt") as persistence:
                 for line in persistence: print(line)
+            continue
 
         if o == '0':
             break
@@ -181,7 +182,6 @@ if __name__ == "__main__":
     pag_1()
     guardar()
     cerrar()
-    visual()
     cerrar()
 
 
