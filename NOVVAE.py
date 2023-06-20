@@ -19,13 +19,14 @@ from webbrowser import open_new_tab
                 )/' _/     \   `-_,   /             
                 `-'" `"\_  ,_.-;_.-\_ ',          
                     _.-'_./   {_.'   ; /           
-                   {_.-``-'         {_/ v1.3    
+                   {_.-``-'         {_/ v1.4    
 
 
 '''
 
 NOVVAE_2 = 'https://www.youtube.com/playlist?list=PLV2hNo2SKdY3FA-HMN1xFlYEpp8P5BL9O'
 LIKES    = 'https://www.youtube.com/playlist?list=LL'
+PERSISTENCE_DIR = "c:/Users/Esteban/Downloads/EAFIT/-CODE-/NOVVAE_PERSISTENCE.txt"
 
 #---------------clicklist--------------------
 
@@ -46,6 +47,8 @@ def pag_2():        p.moveTo(360, 10, 0.2)  ; p.click()
 def pag_3():        p.moveTo(560, 10, 0.2)  ; p.click()
 
 def terminal():     p.moveTo(660, 700, 0.2) ; p.click()
+
+def refresh_link(): p.moveTo(10, 700, 0.2) ; p.click()
 
 def like():         p.moveTo(610, 690, 0.2) ; p.click()   
 
@@ -80,7 +83,7 @@ def like_list():
 #--------------------------persistence---------------------------
 
 def persistencia(texto):
-    with open("NOVVAE_PERSISTENCE.txt", mode="+w") as persistence:
+    with open(PERSISTENCE_DIR, mode="+w") as persistence:
         persistence.write(texto)
 
 def copiar_link():
@@ -101,9 +104,9 @@ def iniciar(novvae = False):
     if novvae: open_new_tab(NOVVAE_2)
 
     last_song = ''
-    with open("NOVVAE_PERSISTENCE.txt") as persistence:
+    with open(PERSISTENCE_DIR) as persistence:
         for line in persistence: last_song = line
-
+    print(last_song)
     open_new_tab(last_song)
     sleep(5)
     nueva_pestana()
@@ -143,7 +146,7 @@ if __name__ == "__main__":
             chrome()
             pag_1()
             like()
-            sleep(3)
+            sleep(2)
             pasar()
             pag_2()
             visual()
@@ -169,8 +172,20 @@ if __name__ == "__main__":
             continue
 
         if o == '-':
-            with open("NOVVAE_PERSISTENCE.txt") as persistence:
+            with open(PERSISTENCE_DIR) as persistence:
                 for line in persistence: print(line)
+            continue
+
+        if o == 'g':
+            chrome()
+            pag_1()
+            guardar()
+            refresh_link()
+            with open(PERSISTENCE_DIR) as persistence:
+                for line in persistence: print(line)
+            pag_2()
+            visual()
+            terminal()
             continue
 
         if o == '0':
