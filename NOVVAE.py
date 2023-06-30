@@ -2,7 +2,8 @@ import pyautogui as p
 from pyperclip import paste
 from time import sleep
 from webbrowser import open_new_tab
-'''                                                            
+
+'''
 
 `7MN.   `7MF'                                                  
   MMN.    M                                                    
@@ -19,7 +20,7 @@ from webbrowser import open_new_tab
                 )/' _/     \   `-_,   /             
                 `-'" `"\_  ,_.-;_.-\_ ',          
                     _.-'_./   {_.'   ; /           
-                   {_.-``-'         {_/ v1.4    
+                   {_.-``-'         {_/ v1.5   
 
 
 '''
@@ -50,7 +51,7 @@ def terminal():     p.moveTo(660, 700, 0.2) ; p.click()
 
 def refresh_link(): p.moveTo(10, 700, 0.2) ; p.click()
 
-def like():         p.moveTo(610, 690, 0.2) ; p.click()   
+def like():         p.moveTo(566, 700, 0.2) ; p.click()   
 
 def link():         p.moveTo(660, 50, 0.2)  ; p.click()
 
@@ -108,9 +109,10 @@ def iniciar(novvae = False):
         for line in persistence: last_song = line
     print(last_song)
     open_new_tab(last_song)
-    sleep(5)
+    sleep(6.5)
     nueva_pestana()
 
+#CLICK POSITION TESTING
 #pos()
 
 if __name__ == "__main__":
@@ -146,7 +148,7 @@ if __name__ == "__main__":
             chrome()
             pag_1()
             like()
-            sleep(2)
+            sleep(2.5)
             pasar()
             pag_2()
             visual()
@@ -176,7 +178,7 @@ if __name__ == "__main__":
                 for line in persistence: print(line)
             continue
 
-        if o == 'g':
+        if o == 'g' or o == 's':
             chrome()
             pag_1()
             guardar()
@@ -188,10 +190,37 @@ if __name__ == "__main__":
             terminal()
             continue
 
-        if o == '0':
+        if o == 'm' or o == '5':
+            chrome()
+            pag_1()
+            p.press('5')
+            pag_2()
+            visual()
+            terminal()
+            continue
+
+        if o == 'i' or o == ',':
+            chrome()
+            pag_1()
+            p.press('0')
+            pag_2()
+            visual()
+            terminal()
+            continue
+
+        if o == 'q' or o == '.':
+            chrome()
+            pag_1()
+            p.press('2')
+            pag_2()
+            visual()
+            terminal()
+            continue
+
+        if o == '0' or o == 'exit':
             break
 
-        print('l:like n:nope v:vide 0:quit\nb:back p:paus k:list -:numb')
+        print('l:like n:nope v:vide 0:quit\ng:save b:back p:paus k:list\n-:numb m:half ,:init .:qrtr')
     
     chrome()
     pag_1()
