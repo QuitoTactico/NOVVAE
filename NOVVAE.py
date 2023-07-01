@@ -20,7 +20,7 @@ from webbrowser import open_new_tab
                 )/' _/     \   `-_,   /             
                 `-'" `"\_  ,_.-;_.-\_ ',          
                     _.-'_./   {_.'   ; /           
-                   {_.-``-'         {_/ v1.5   
+                   {_.-``-'         {_/ v1.7
 
 
 '''
@@ -45,32 +45,32 @@ def pag_1():        p.moveTo(165, 10, 0.2)  ; p.click()
 
 def pag_2():        p.moveTo(360, 10, 0.2)  ; p.click()
 
+def pag_2_fast():   p.moveTo(360, 10, 0.025); p.click()
+
 def pag_3():        p.moveTo(560, 10, 0.2)  ; p.click()
 
 def terminal():     p.moveTo(660, 700, 0.2) ; p.click()
 
-def refresh_link(): p.moveTo(10, 700, 0.2) ; p.click()
+def refresh_link(): p.moveTo(10, 700, 0.05) ; p.click()
 
 def like():         p.moveTo(566, 700, 0.2) ; p.click()   
 
-def link():         p.moveTo(660, 50, 0.2)  ; p.click()
+def link():         p.moveTo(660, 50, 0.05)  ; p.click()
 
 def cerrar_tab():   p.moveTo(255, 15, 0.2)  ; p.click()
+
+def search_bar():   p.moveTo(500, 184, 0.2) ; p.click()
 
 #-------------------options--------------------
 
 def pasar():
     p.keyDown('shiftleft')
-    sleep(0.5)
     p.press('n')
-    sleep(0.5)
     p.keyUp('shiftleft')
 
 def anterior():
     p.keyDown('shiftleft')
-    sleep(0.5)
     p.press('p')
-    sleep(0.5)
     p.keyUp('shiftleft')
 
 def nueva_pestana():
@@ -80,6 +80,14 @@ def nueva_pestana():
 
 def like_list():
     open_new_tab(LIKES)
+
+def novvae_list():
+    open_new_tab(NOVVAE_2)
+
+def search(texto):
+    p.click()
+    p.write(texto, 0.2)
+    p.press("enter")
 
 #--------------------------persistence---------------------------
 
@@ -93,23 +101,24 @@ def copiar_link():
     p.press('c')
     p.keyUp('ctrl')
 
-def guardar():
+def guardar() -> str:
     copiar_link()
     url = paste()
     persistencia( url )
+    return url
 
 #--------------------------main-------------------------------
 
-def iniciar(novvae = False):
-    sleep(5)
-    if novvae: open_new_tab(NOVVAE_2)
-
+def iniciar():
+    sleep(6)
     last_song = ''
     with open(PERSISTENCE_DIR) as persistence:
         for line in persistence: last_song = line
     print(last_song)
     open_new_tab(last_song)
-    sleep(6.5)
+    sleep(0.05)
+    pag_1()
+    sleep(2)
     nueva_pestana()
 
 #CLICK POSITION TESTING
@@ -119,6 +128,9 @@ if __name__ == "__main__":
     chrome()
     iniciar()
     cerrar_tab()
+    sleep(6)
+    pag_1()
+    pag_2()
     visual()
     terminal()
 
@@ -130,7 +142,7 @@ if __name__ == "__main__":
             chrome()
             pag_1()
             pasar()
-            pag_2()
+            pag_2_fast()
             visual()
             terminal()
             continue
@@ -159,7 +171,7 @@ if __name__ == "__main__":
             chrome()
             pag_1()
             p.press('space')
-            pag_2()
+            pag_2_fast()
             visual()
             terminal()
             continue
@@ -172,6 +184,10 @@ if __name__ == "__main__":
         if o == 'k':
             like_list()
             continue
+        
+        if o == 'kk' or o == 'novvae' or o == 'no':
+            novvae_list()
+            continue
 
         if o == '-':
             with open(PERSISTENCE_DIR) as persistence:
@@ -181,11 +197,10 @@ if __name__ == "__main__":
         if o == 'g' or o == 's':
             chrome()
             pag_1()
-            guardar()
+            url = guardar()
             refresh_link()
-            with open(PERSISTENCE_DIR) as persistence:
-                for line in persistence: print(line)
-            pag_2()
+            print(url)
+            pag_2_fast()
             visual()
             terminal()
             continue
@@ -199,7 +214,7 @@ if __name__ == "__main__":
             terminal()
             continue
 
-        if o == 'i' or o == ',':
+        if o == 'i' or o == '.' or o == '00':
             chrome()
             pag_1()
             p.press('0')
@@ -208,7 +223,7 @@ if __name__ == "__main__":
             terminal()
             continue
 
-        if o == 'q' or o == '.':
+        if o == 'q' or o == ',' or o == '2':
             chrome()
             pag_1()
             p.press('2')
@@ -217,15 +232,34 @@ if __name__ == "__main__":
             terminal()
             continue
 
+        if o == '0v':
+            cerrar()
+
+        if o == '0c':
+            chrome()
+            pag_1()
+            guardar()
+            cerrar()
+            continue
+
+        if o[0:6] == 'search':
+            texto = o[6:]
+            chrome()
+            nueva_pestana()
+            search_bar()
+            search(texto)
+            continue
+
         if o == '0' or o == 'exit':
             break
 
-        print('l:like n:nope v:vide 0:quit\ng:save b:back p:paus k:list\n-:numb m:half ,:init .:qrtr')
+        print('l:like n:nope v:vide 0:quit 0c||0v',
+              'g:save b:back p:paus k:list kk:nov',
+              '-:numb m:half ,:qrtr .:init search',
+              sep='\n')
     
     chrome()
     pag_1()
     guardar()
     cerrar()
     cerrar()
-
-
