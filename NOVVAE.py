@@ -20,7 +20,7 @@ from webbrowser import open_new_tab
                 )/' _/     \   `-_,   /             
                 `-'" `"\_  ,_.-;_.-\_ ',          
                     _.-'_./   {_.'   ; /           
-                   {_.-``-'         {_/ v1.7
+                   {_.-``-'         {_/ v1.7.1
 
 
 '''
@@ -45,7 +45,7 @@ def pag_1():        p.moveTo(165, 10, 0.2)  ; p.click()
 
 def pag_2():        p.moveTo(360, 10, 0.2)  ; p.click()
 
-def pag_2_fast():   p.moveTo(360, 10, 0.025); p.click()
+def pag_2_fast():   p.moveTo(360, 10, 0.02); p.click()
 
 def pag_3():        p.moveTo(560, 10, 0.2)  ; p.click()
 
@@ -232,13 +232,19 @@ if __name__ == "__main__":
             terminal()
             continue
 
-        if o == '0v':
-            cerrar()
-
-        if o == '0c':
+        if o == '0v' or o == "0'":
             chrome()
             pag_1()
             guardar()
+            cerrar_tab()
+            visual()
+            cerrar()
+
+        if o == '0c' or '09':
+            chrome()
+            pag_1()
+            url = guardar()
+            print(url)
             cerrar()
             continue
 
@@ -253,7 +259,7 @@ if __name__ == "__main__":
         if o == '0' or o == 'exit':
             break
 
-        print('l:like n:nope v:vide 0:quit 0c||0v',
+        print("l:like n:nope v:vide 0:quit 09||0'",
               'g:save b:back p:paus k:list kk:nov',
               '-:numb m:half ,:qrtr .:init search',
               sep='\n')
