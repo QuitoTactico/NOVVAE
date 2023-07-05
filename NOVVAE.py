@@ -20,14 +20,15 @@ from webbrowser import open_new_tab
                 )/' _/     \   `-_,   /             
                 `-'" `"\_  ,_.-;_.-\_ ',          
                     _.-'_./   {_.'   ; /           
-                   {_.-``-'         {_/ v1.7.1
+                   {_.-``-'         {_/ v1.7.2
 
 
 '''
 
 NOVVAE_2 = 'https://www.youtube.com/playlist?list=PLV2hNo2SKdY3FA-HMN1xFlYEpp8P5BL9O'
 LIKES    = 'https://www.youtube.com/playlist?list=LL'
-PERSISTENCE_DIR = "c:/Users/Esteban/Downloads/EAFIT/-CODE-/NOVVAE_PERSISTENCE.txt"
+NOVVAE_REPO = 'https://github.com/QuitoTactico/NOVVAE/upload/main'
+PERSISTENCE_DIR = "c:/Users/Esteban/Downloads/-CODE-/NOVVAE_PERSISTENCE.txt"
 
 #---------------clicklist--------------------
 
@@ -37,9 +38,9 @@ def cerrar():       p.moveTo(1344, 15, 0.2) ; p.click()
 
 def minimizar():    p.moveTo(1251, 13, 0.2) ; p.click()
 
-def visual():       p.moveTo(390, 740, 0.2) ; p.click()
+def visual():       p.moveTo(280, 755, 0.2) ; p.click()
 
-def chrome():       p.moveTo(330, 740, 0.2) ; p.click()
+def chrome():       p.moveTo(240, 755, 0.2) ; p.click()
 
 def pag_1():        p.moveTo(165, 10, 0.2)  ; p.click()
 
@@ -53,7 +54,7 @@ def terminal():     p.moveTo(660, 700, 0.2) ; p.click()
 
 def refresh_link(): p.moveTo(10, 700, 0.05) ; p.click()
 
-def like():         p.moveTo(566, 700, 0.2) ; p.click()   
+def like():         p.moveTo(620, 705, 0.2) ; p.click()   
 
 def link():         p.moveTo(660, 50, 0.05)  ; p.click()
 
@@ -84,10 +85,18 @@ def like_list():
 def novvae_list():
     open_new_tab(NOVVAE_2)
 
+def github():
+    open_new_tab(NOVVAE_REPO)
+
 def search(texto):
     p.click()
     p.write(texto, 0.2)
     p.press("enter")
+
+def search_yt(texto:str):
+    query = 'https://www.youtube.com/results?search_query='
+    texto_plus = texto.replace(' ','+')
+    open_new_tab(query + texto_plus)
 
 #--------------------------persistence---------------------------
 
@@ -110,7 +119,7 @@ def guardar() -> str:
 #--------------------------main-------------------------------
 
 def iniciar():
-    sleep(6)
+    sleep(10)
     last_song = ''
     with open(PERSISTENCE_DIR) as persistence:
         for line in persistence: last_song = line
@@ -189,6 +198,10 @@ if __name__ == "__main__":
             novvae_list()
             continue
 
+        if o == 'git':
+            github()
+            continue
+
         if o == '-':
             with open(PERSISTENCE_DIR) as persistence:
                 for line in persistence: print(line)
@@ -240,7 +253,7 @@ if __name__ == "__main__":
             visual()
             cerrar()
 
-        if o == '0c' or '09':
+        if o == '0c' or o == '09':
             chrome()
             pag_1()
             url = guardar()
@@ -256,12 +269,21 @@ if __name__ == "__main__":
             search(texto)
             continue
 
+        if o[0:2] == 'yt':
+            search_yt(o[2:])
+            continue
+
+        if o[0:7] == 'youtube':
+            search_yt(o[7:])
+            continue
+
         if o == '0' or o == 'exit':
             break
 
-        print("l:like n:nope v:vide 0:quit 09||0'",
+        print("l:like n:nope v:vide 0:quit",
               'g:save b:back p:paus k:list kk:nov',
-              '-:numb m:half ,:qrtr .:init search',
+              '-:numb 5:half 2:qrtr 00:ini search',
+              "git:hb 09:Xcr 0':Xvs yt:src",
               sep='\n')
     
     chrome()
