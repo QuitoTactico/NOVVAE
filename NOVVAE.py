@@ -20,8 +20,8 @@ from webbrowser import open_new_tab
                 )/' _/     \   `-_,   /             
                 `-'" `"\_  ,_.-;_.-\_ ',          
                     _.-'_./   {_.'   ; /           
-                   {_.-``-'         {_/ v1.7.2
-
+                   {_.-``-'         {_/ v1.7.3
+                                        
 
 '''
 
@@ -143,18 +143,21 @@ if __name__ == "__main__":
     visual()
     terminal()
 
+    auto_save_count = 0
+
     while True:
         print('-> ',end='')
         o = input()
 
-        if o == 'n':
+        if o == 'n' or o == '':
             chrome()
             pag_1()
             pasar()
             pag_2_fast()
             visual()
             terminal()
-            continue
+            auto_save_count += 1
+            if auto_save_count != 5 : continue
 
         if o == 'b':
             chrome()
@@ -174,7 +177,8 @@ if __name__ == "__main__":
             pag_2()
             visual()
             terminal()
-            continue
+            auto_save_count += 1
+            if auto_save_count != 5 : continue
 
         if o == 'p':
             chrome()
@@ -198,7 +202,7 @@ if __name__ == "__main__":
             novvae_list()
             continue
 
-        if o == 'git':
+        if o == 'git' or o == 'github' or o == 'repo':
             github()
             continue
 
@@ -207,7 +211,7 @@ if __name__ == "__main__":
                 for line in persistence: print(line)
             continue
 
-        if o == 'g' or o == 's':
+        if o == 'g' or o == 's' or auto_save_count == 5:
             chrome()
             pag_1()
             url = guardar()
@@ -216,6 +220,7 @@ if __name__ == "__main__":
             pag_2_fast()
             visual()
             terminal()
+            auto_save_count = 0
             continue
 
         if o == 'm' or o == '5':
