@@ -1,0 +1,3 @@
+pyperclip
+pyautogui
+yt_dlp
