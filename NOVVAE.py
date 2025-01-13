@@ -2,33 +2,36 @@ import pyautogui as p
 from pyperclip import paste
 from time import sleep
 from webbrowser import open_new_tab
+import subprocess
+import pygetwindow as gw
 
-'''
 
-`7MN.   `7MF'                                                  
-  MMN.    M                                                    
-  M YMb   M   ,pW"Wq.  `7M'   `MF'`7M'   `MF' ,6"Yb.   .gP"Ya  
-  M  `MN. M  6W'   `Wb   VA   ,V    VA   ,V  8)   MM  ,M'   Yb 
-  M   `MM.M  8M     M8    VA ,V      VA ,V    ,pm9MM  8M"""""" 
-  M     YMM  YA.   ,A9     VVV        VVV    8M   MM  YM.    , 
-.JML.    YM   `Ybmd9'       W          W     `Moo9^Yo. `Mbmmd' 
-
-                                               
-                _                ___       _.--.
-                \`.|\..----...-'`   `-._.-'_.-'`             
-                /  ' `         ,       _.-'          
-                )/' _/     \   `-_,   /             
-                `-'" `"\_  ,_.-;_.-\_ ',          
-                    _.-'_./   {_.'   ; /           
-                   {_.-``-'         {_/ v1.7.4
+#     `7MN.   `7MF'                                                  
+#       MMN.    M                                                    
+#       M YMb   M   ,pW"Wq.  `7M'   `MF'`7M'   `MF' ,6"Yb.   .gP"Ya  
+#       M  `MN. M  6W'   `Wb   VA   ,V    VA   ,V  8)   MM  ,M'   Yb 
+#       M   `MM.M  8M     M8    VA ,V      VA ,V    ,pm9MM  8M"""""" 
+#       M     YMM  YA.   ,A9     VVV        VVV    8M   MM  YM.    , 
+#     .JML.    YM   `Ybmd9'       W          W     `Moo9^Yo. `Mbmmd' 
+#     
+#                                                    
+#                     _                ___       _.--.
+#                     \`.|\..----...-'`   `-._.-'_.-'`             
+#                     /  ' `         ,       _.-'          
+#                     )/' _/     \   `-_,   /             
+#                     `-'" `"\_  ,_.-;_.-\_ ',          
+#                         _.-'_./   {_.'   ; /           
+#                        {_.-``-'         {_/ v1.7.4
                                         
 
-'''
-
 NOVVAE_2 = "https://www.youtube.com/playlist?list=PLV2hNo2SKdY3FA-HMN1xFlYEpp8P5BL9O"
+NOVVAE_3 = "https://www.youtube.com/playlist?list=PLV2hNo2SKdY1b7zOrxEsdlCarJmUJvwdU"
+
+ACTUAL_NOVVAE = NOVVAE_3
+
 LIKES = "https://www.youtube.com/playlist?list=LL"
-NOVVAE_REPO = "https://github.com/QuitoTactico/NOVVAE/upload/main"
-PERSISTENCE_DIR = "c:/Users/Esteban/Downloads/-CODE-/NOVVAE_PERSISTENCE.txt"
+NOVVAE_REPO = "https://github.com/QuitoTactico/NOVVAE/"
+PERSISTENCE_DIR = "./NOVVAE_PERSISTENCE.txt"
 
 # ---------------clicklist--------------------
 
@@ -47,14 +50,30 @@ def minimizar():
     p.click()
 
 
-def visual():
+def visual_old():
     p.moveTo(280, 755, 0.2)
     p.click()
 
 
-def chrome():
+def visual():
+    windows = [w for w in gw.getAllWindows() if "Visual Studio Code" in w.title]
+    if windows:
+        windows[0].activate()
+    else:
+        subprocess.run(["code"])
+
+
+def browser_old():
     p.moveTo(240, 755, 0.2)
     p.click()
+
+
+def browser(name="Opera"):
+    windows = [w for w in gw.getAllWindows() if name in w.title]
+    if windows:
+        windows[0].activate()
+    else:
+        subprocess.run(["start", "opera"], shell=True)
 
 
 def pag_1():
@@ -133,7 +152,7 @@ def like_list():
 
 
 def novvae_list():
-    open_new_tab(NOVVAE_2)
+    open_new_tab(ACTUAL_NOVVAE)
 
 
 def github():
@@ -195,11 +214,12 @@ def iniciar():
 # pos()
 
 if __name__ == "__main__":
-    chrome()
+    browser()
     iniciar()
     cerrar_tab()
     sleep(6)
     pag_1()
+    sleep(2)
     pag_2()
     visual()
     terminal()
@@ -211,7 +231,7 @@ if __name__ == "__main__":
         o = input()
 
         if o == "n" or o == "":
-            chrome()
+            browser()
             pag_1()
             pasar()
             pag_2_fast()
@@ -222,7 +242,7 @@ if __name__ == "__main__":
                 continue
 
         if o == "b":
-            chrome()
+            browser()
             pag_1()
             anterior()
             pag_2()
@@ -231,7 +251,7 @@ if __name__ == "__main__":
             continue
 
         if o == "l":
-            chrome()
+            browser()
             pag_1()
             like()
             sleep(2.5)
@@ -244,7 +264,7 @@ if __name__ == "__main__":
                 continue
 
         if o == "p":
-            chrome()
+            browser()
             pag_1()
             p.press("space")
             pag_2_fast()
@@ -253,7 +273,7 @@ if __name__ == "__main__":
             continue
 
         if o == "v":
-            chrome()
+            browser()
             pag_1()
             continue
 
@@ -276,7 +296,7 @@ if __name__ == "__main__":
             continue
 
         if o == "g" or o == "s" or auto_save_count == 5:
-            chrome()
+            browser()
             pag_1()
             url = guardar()
             refresh_link()
@@ -288,7 +308,7 @@ if __name__ == "__main__":
             continue
 
         if o == "m" or o == "5":
-            chrome()
+            browser()
             pag_1()
             p.press("5")
             pag_2()
@@ -297,7 +317,7 @@ if __name__ == "__main__":
             continue
 
         if o == "i" or o == "." or o == "00":
-            chrome()
+            browser()
             pag_1()
             p.press("0")
             pag_2()
@@ -306,7 +326,7 @@ if __name__ == "__main__":
             continue
 
         if o == "q" or o == "," or o == "2":
-            chrome()
+            browser()
             pag_1()
             p.press("2")
             pag_2()
@@ -315,7 +335,7 @@ if __name__ == "__main__":
             continue
 
         if o == "0v" or o == "0'":
-            chrome()
+            browser()
             pag_1()
             guardar()
             cerrar_tab()
@@ -323,7 +343,7 @@ if __name__ == "__main__":
             cerrar()
 
         if o == "0c" or o == "09":
-            chrome()
+            browser()
             pag_1()
             url = guardar()
             print(url)
@@ -332,7 +352,7 @@ if __name__ == "__main__":
 
         if o[0:6] == "search":
             texto = o[6:]
-            chrome()
+            browser()
             nueva_pestana()
             search_bar()
             search(texto)
@@ -350,14 +370,38 @@ if __name__ == "__main__":
             break
 
         print(
-            "l:like n:nope v:vide 0:quit",
-            "g:save b:back p:paus k:list kk:nov",
-            "-:numb 5:half 2:qrtr 00:ini search",
-            "git:hb 09:Xcr 0':Xvs yt:src",
+            "====== MAIN ======",
+            "l : like",
+            "n : next video",
+            "b : past video",
+            "p : pause",
+            "v : see",
+
+            "====== VIDEO ======",
+            "-  : actual video index",
+            "00 : initialice video",
+            "5  : half of the video",
+            "2  : quarter of the video",
+
+            "======= APP =======",
+            "g  : save actual video",
+            "0  : exit app",
+            "09 : close browser tab",
+            "0' : close VSC tab",
+
+            "====== LISTS ======",
+            "kk : video list",
+            "k  : likes list",
+
+            "====== EXTRA ======",
+            "git            : see project repo",
+            "search <query> : search on browser",
+            "yt <query>     : search on youtube",
+            
             sep="\n",
         )
 
-    chrome()
+    browser()
     pag_1()
     guardar()
     cerrar()

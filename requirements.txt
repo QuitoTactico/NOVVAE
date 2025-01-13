@@ -1,3 +1,4 @@
 pyperclip
 pyautogui
 yt_dlp
+pygetwindow
