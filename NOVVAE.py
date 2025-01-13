@@ -3,26 +3,27 @@ from pyperclip import paste
 from time import sleep
 from webbrowser import open_new_tab
 import subprocess
-import pygetwindow as gw
+from pywinauto import Desktop
+from time import sleep
 
 
-#     `7MN.   `7MF'                                                  
-#       MMN.    M                                                    
-#       M YMb   M   ,pW"Wq.  `7M'   `MF'`7M'   `MF' ,6"Yb.   .gP"Ya  
-#       M  `MN. M  6W'   `Wb   VA   ,V    VA   ,V  8)   MM  ,M'   Yb 
-#       M   `MM.M  8M     M8    VA ,V      VA ,V    ,pm9MM  8M"""""" 
-#       M     YMM  YA.   ,A9     VVV        VVV    8M   MM  YM.    , 
-#     .JML.    YM   `Ybmd9'       W          W     `Moo9^Yo. `Mbmmd' 
-#     
-#                                                    
+#     `7MN.   `7MF'
+#       MMN.    M
+#       M YMb   M   ,pW"Wq.  `7M'   `MF'`7M'   `MF' ,6"Yb.   .gP"Ya
+#       M  `MN. M  6W'   `Wb   VA   ,V    VA   ,V  8)   MM  ,M'   Yb
+#       M   `MM.M  8M     M8    VA ,V      VA ,V    ,pm9MM  8M""""""
+#       M     YMM  YA.   ,A9     VVV        VVV    8M   MM  YM.    ,
+#     .JML.    YM   `Ybmd9'       W          W     `Moo9^Yo. `Mbmmd'
+#
+#
 #                     _                ___       _.--.
-#                     \`.|\..----...-'`   `-._.-'_.-'`             
-#                     /  ' `         ,       _.-'          
-#                     )/' _/     \   `-_,   /             
-#                     `-'" `"\_  ,_.-;_.-\_ ',          
-#                         _.-'_./   {_.'   ; /           
+#                     \`.|\..----...-'`   `-._.-'_.-'`
+#                     /  ' `         ,       _.-'
+#                     )/' _/     \   `-_,   /
+#                     `-'" `"\_  ,_.-;_.-\_ ',
+#                         _.-'_./   {_.'   ; /
 #                        {_.-``-'         {_/ v1.7.4
-                                        
+
 
 NOVVAE_2 = "https://www.youtube.com/playlist?list=PLV2hNo2SKdY3FA-HMN1xFlYEpp8P5BL9O"
 NOVVAE_3 = "https://www.youtube.com/playlist?list=PLV2hNo2SKdY1b7zOrxEsdlCarJmUJvwdU"
@@ -55,11 +56,17 @@ def visual_old():
     p.click()
 
 
+def open_app(partial_title) -> bool:
+    windows = Desktop(backend="uia").windows()
+    for window in windows:
+        if partial_title in window.window_text():
+            window.set_focus()
+            return True
+    return False
+
+
 def visual():
-    windows = [w for w in gw.getAllWindows() if "Visual Studio Code" in w.title]
-    if windows:
-        windows[0].activate()
-    else:
+    if not open_app("Visual Studio Code"):
         subprocess.run(["code"])
 
 
@@ -69,11 +76,8 @@ def browser_old():
 
 
 def browser(name="Opera"):
-    windows = [w for w in gw.getAllWindows() if name in w.title]
-    if windows:
-        windows[0].activate()
-    else:
-        subprocess.run(["start", "opera"], shell=True)
+    if not open_app(name):
+        subprocess.run(["start", name.lower()], shell=True)
 
 
 def pag_1():
@@ -204,10 +208,14 @@ def iniciar():
             last_song = line
     print(last_song)
     open_new_tab(last_song)
-    sleep(0.05)
+    sleep(2)
     pag_1()
     sleep(2)
     nueva_pestana()
+    sleep(2)
+    pag_1()
+    sleep(0.2)
+    pag_2()
 
 
 # CLICK POSITION TESTING
@@ -219,7 +227,7 @@ if __name__ == "__main__":
     cerrar_tab()
     sleep(6)
     pag_1()
-    sleep(2)
+    sleep(6)
     pag_2()
     visual()
     terminal()
@@ -376,32 +384,28 @@ if __name__ == "__main__":
             "b : past video",
             "p : pause",
             "v : see",
-
             "====== VIDEO ======",
             "-  : actual video index",
             "00 : initialice video",
             "5  : half of the video",
             "2  : quarter of the video",
-
             "======= APP =======",
             "g  : save actual video",
             "0  : exit app",
             "09 : close browser tab",
             "0' : close VSC tab",
-
             "====== LISTS ======",
             "kk : video list",
             "k  : likes list",
-
             "====== EXTRA ======",
             "git            : see project repo",
             "search <query> : search on browser",
             "yt <query>     : search on youtube",
-            
             sep="\n",
         )
 
     browser()
+    sleep(0.5)
     pag_1()
     guardar()
     cerrar()
