@@ -25,6 +25,8 @@ from time import sleep
 #                        {_.-``-'         {_/ v1.7.4
 
 
+CHECK_POS = False
+
 NOVVAE_2 = "https://www.youtube.com/playlist?list=PLV2hNo2SKdY3FA-HMN1xFlYEpp8P5BL9O"
 NOVVAE_3 = "https://www.youtube.com/playlist?list=PLV2hNo2SKdY1b7zOrxEsdlCarJmUJvwdU"
 
@@ -110,9 +112,13 @@ def refresh_link():
     p.click()
 
 
-def like():
+def like_old():
     p.moveTo(620, 705, 0.2)
     p.click()
+
+
+def like():
+    imagen_click("like-icon")
 
 
 def link():
@@ -121,13 +127,39 @@ def link():
 
 
 def cerrar_tab():
-    p.moveTo(255, 15, 0.2)
+    p.moveTo(275, 18, 0.2)
     p.click()
 
 
 def search_bar():
     p.moveTo(500, 184, 0.2)
     p.click()
+
+
+# --------------image recognition---------------
+
+
+def imagen_click(image, confidence=0.8, duration=0.2, region=None, minSearchTime=None):
+    try:
+        p.click(
+            p.locateCenterOnScreen(
+                f"media/{image}.png",
+                confidence=confidence,
+                region=region,
+                minSearchTime=minSearchTime,
+            ),
+            duration=duration,
+        )
+    except:
+        p.click(
+            p.locateCenterOnScreen(
+                f"media/{image}.png",
+                confidence=0.75,
+                region=region,
+                minSearchTime=2,
+            ),
+            duration=duration,
+        )
 
 
 # -------------------options--------------------
@@ -208,29 +240,31 @@ def iniciar():
             last_song = line
     print(last_song)
     open_new_tab(last_song)
-    sleep(2)
+    sleep(3)
     pag_1()
     sleep(2)
     nueva_pestana()
     sleep(2)
-    pag_1()
-    sleep(0.2)
     pag_2()
-
-
-# CLICK POSITION TESTING
-# pos()
-
-if __name__ == "__main__":
-    browser()
-    iniciar()
     cerrar_tab()
     sleep(6)
-    pag_1()
-    sleep(6)
     pag_2()
+    sleep(6)
+    pag_1()
+    sleep(1)
     visual()
     terminal()
+
+
+if __name__ == "__main__":
+
+    # CLICK POSITION TESTING
+    if CHECK_POS:
+        pos()
+        exit()
+
+    browser()
+    iniciar()
 
     auto_save_count = 0
 
@@ -383,9 +417,9 @@ if __name__ == "__main__":
             "n : next video",
             "b : past video",
             "p : pause",
-            "v : see",
+            "v : see video",
             "====== VIDEO ======",
-            "-  : actual video index",
+            "-  : current video index",
             "00 : initialice video",
             "5  : half of the video",
             "2  : quarter of the video",
