@@ -3,3 +3,4 @@ pyautogui
 yt_dlp
 pywinauto
 pillow
+opencv-python

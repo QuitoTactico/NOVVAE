@@ -126,7 +126,7 @@ def link():
     p.click()
 
 
-def cerrar_tab():
+def cerrar_pag_1():
     p.moveTo(275, 18, 0.2)
     p.click()
 
@@ -233,27 +233,54 @@ def guardar() -> str:
 
 
 def iniciar():
+    # X
+    browser()
     sleep(10)
-    last_song = ""
-    with open(PERSISTENCE_DIR) as persistence:
-        for line in persistence:
-            last_song = line
-    print(last_song)
-    open_new_tab(last_song)
+
+    # xV
+    saved_song = get_saved_song()
+    print(saved_song)
+    open_new_tab(saved_song)
+    sleep(7)
+
+    # Xv
+    pag_1()
+    sleep(2)
+
+    # xvX
+    nueva_pestana()
+    pag_2()
+    sleep(0.5)
+    pag_3()
+    sleep(2)
+
+    # Vx
+    pag_2()
+    cerrar_pag_1()
+    sleep(6)
+
+    # vX
+    pag_2()
     sleep(3)
     pag_1()
-    sleep(2)
-    nueva_pestana()
-    sleep(2)
+    sleep(0.5)
     pag_2()
-    cerrar_tab()
-    sleep(6)
-    pag_2()
-    sleep(6)
+    sleep(3)
+
+    # Vx -> vX -> VSC
     pag_1()
     sleep(1)
+    pag_2_fast()
     visual()
     terminal()
+
+
+def get_saved_song():
+    saved_song = ""
+    with open(PERSISTENCE_DIR) as persistence:
+        for line in persistence:
+            saved_song = line
+    return saved_song
 
 
 if __name__ == "__main__":
@@ -263,7 +290,6 @@ if __name__ == "__main__":
         pos()
         exit()
 
-    browser()
     iniciar()
 
     auto_save_count = 0
@@ -332,11 +358,10 @@ if __name__ == "__main__":
             continue
 
         if o == "-":
-            with open(PERSISTENCE_DIR) as persistence:
-                for line in persistence:
-                    print(line)
+            print(get_saved_song())
             continue
 
+        # here's the autosave
         if o == "g" or o == "s" or auto_save_count == 5:
             browser()
             pag_1()
@@ -380,7 +405,7 @@ if __name__ == "__main__":
             browser()
             pag_1()
             guardar()
-            cerrar_tab()
+            cerrar_pag_1()
             visual()
             cerrar()
 
