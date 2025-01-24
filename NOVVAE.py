@@ -4,7 +4,6 @@ from time import sleep
 from webbrowser import open_new_tab
 import subprocess
 from pywinauto import Desktop
-from time import sleep
 
 
 #     `7MN.   `7MF'
@@ -22,7 +21,7 @@ from time import sleep
 #                     )/' _/     \   `-_,   /
 #                     `-'" `"\_  ,_.-;_.-\_ ',
 #                         _.-'_./   {_.'   ; /
-#                        {_.-``-'         {_/ v1.7.4
+#                        {_.-``-'         {_/ v2.0.0
 
 
 CHECK_POS = False
@@ -201,12 +200,6 @@ def search(texto):
     p.press("enter")
 
 
-def search_yt(texto: str):
-    query = "https://www.youtube.com/results?search_query="
-    texto_plus = texto.replace(" ", "+")
-    open_new_tab(query + texto_plus)
-
-
 # --------------------------persistence---------------------------
 
 
@@ -229,19 +222,27 @@ def guardar() -> str:
     return url
 
 
-# --------------------------main-------------------------------
+# -------------------------menu functions----------------------------
+
+
+def get_saved_song():
+    saved_song = ""
+    with open(PERSISTENCE_DIR) as persistence:
+        for line in persistence:
+            saved_song = line
+    return saved_song
 
 
 def iniciar():
     # X
     browser()
-    sleep(10)
+    sleep(15)
 
     # xV
     saved_song = get_saved_song()
     print(saved_song)
     open_new_tab(saved_song)
-    sleep(7)
+    sleep(10)
 
     # Xv
     pag_1()
@@ -250,7 +251,7 @@ def iniciar():
     # xvX
     nueva_pestana()
     pag_2()
-    sleep(0.5)
+    sleep(1)
     pag_3()
     sleep(2)
 
@@ -263,32 +264,133 @@ def iniciar():
     pag_2()
     sleep(3)
     pag_1()
-    sleep(0.5)
+    sleep(1)
     pag_2()
-    sleep(3)
+    sleep(6)
 
     # Vx -> vX -> VSC
     pag_1()
-    sleep(1)
+    sleep(2)
     pag_2_fast()
     visual()
     terminal()
 
 
-def get_saved_song():
-    saved_song = ""
-    with open(PERSISTENCE_DIR) as persistence:
-        for line in persistence:
-            saved_song = line
-    return saved_song
+def menu_like():
+    browser()
+    pag_1()
+    like()
+    sleep(2.5)
+    pasar()
+    pag_2()
+    visual()
+    terminal()
 
 
-if __name__ == "__main__":
+def menu_next():
+    browser()
+    pag_1()
+    pasar()
+    pag_2_fast()
+    visual()
+    terminal()
 
-    # CLICK POSITION TESTING
-    if CHECK_POS:
-        pos()
-        exit()
+
+def menu_past():
+    browser()
+    pag_1()
+    anterior()
+    pag_2()
+    visual()
+    terminal()
+
+
+def menu_pause():
+    browser()
+    pag_1()
+    p.press("space")
+    pag_2_fast()
+    visual()
+    terminal()
+
+
+def menu_see_video():
+    browser()
+    pag_1()
+
+
+def menu_initialice_video():
+    browser()
+    pag_1()
+    p.press("0")
+    pag_2()
+    visual()
+    terminal()
+
+
+def menu_quarter_video():
+    browser()
+    pag_1()
+    p.press("2")
+    pag_2()
+    visual()
+    terminal()
+
+
+def menu_half_video():
+    browser()
+    pag_1()
+    p.press("5")
+    pag_2()
+    visual()
+    terminal()
+
+
+def menu_save():
+    browser()
+    pag_1()
+    url = guardar()
+    refresh_link()
+    print(url)
+    pag_2_fast()
+    visual()
+    terminal()
+
+
+def menu_close_browser():
+    browser()
+    pag_1()
+    url = guardar()
+    print(url)
+    cerrar()
+
+
+def menu_close_vsc():
+    browser()
+    pag_1()
+    guardar()
+    cerrar_pag_1()
+    visual()
+    cerrar()
+
+
+def menu_search_browser(texto):
+    browser()
+    nueva_pestana()
+    search_bar()
+    search(texto)
+
+
+def menu_search_youtube(texto):
+    query = "https://www.youtube.com/results?search_query="
+    texto_plus = texto.replace(" ", "+")
+    open_new_tab(query + texto_plus)
+
+
+# --------------------------main---------------------------
+
+
+def main():
 
     iniciar()
 
@@ -298,52 +400,51 @@ if __name__ == "__main__":
         print("-> ", end="")
         o = input()
 
+        # --- main ---
+
+        if o == "l":
+            menu_like()
+            auto_save_count += 1
+            if auto_save_count != 5:
+                continue
+
         if o == "n" or o == "":
-            browser()
-            pag_1()
-            pasar()
-            pag_2_fast()
-            visual()
-            terminal()
+            menu_next()
             auto_save_count += 1
             if auto_save_count != 5:
                 continue
 
         if o == "b":
-            browser()
-            pag_1()
-            anterior()
-            pag_2()
-            visual()
-            terminal()
+            menu_past()
             continue
 
-        if o == "l":
-            browser()
-            pag_1()
-            like()
-            sleep(2.5)
-            pasar()
-            pag_2()
-            visual()
-            terminal()
-            auto_save_count += 1
-            if auto_save_count != 5:
-                continue
-
         if o == "p":
-            browser()
-            pag_1()
-            p.press("space")
-            pag_2_fast()
-            visual()
-            terminal()
+            menu_pause()
             continue
 
         if o == "v":
-            browser()
-            pag_1()
+            menu_see_video()
             continue
+
+        # --- video ---
+
+        if o == "-":
+            print(get_saved_song())
+            continue
+
+        if o == "i" or o == "." or o == "00":
+            menu_initialice_video()
+            continue
+
+        if o == "q" or o == "," or o == "2":
+            menu_quarter_video()
+            continue
+
+        if o == "m" or o == "5":
+            menu_half_video()
+            continue
+
+        # --- lists ---
 
         if o == "k":
             like_list()
@@ -353,88 +454,44 @@ if __name__ == "__main__":
             novvae_list()
             continue
 
-        if o == "git" or o == "github" or o == "repo":
-            github()
-            continue
-
-        if o == "-":
-            print(get_saved_song())
-            continue
+        # --- app ---
 
         # here's the autosave
         if o == "g" or o == "s" or auto_save_count == 5:
-            browser()
-            pag_1()
-            url = guardar()
-            refresh_link()
-            print(url)
-            pag_2_fast()
-            visual()
-            terminal()
+            menu_save()
             auto_save_count = 0
-            continue
-
-        if o == "m" or o == "5":
-            browser()
-            pag_1()
-            p.press("5")
-            pag_2()
-            visual()
-            terminal()
-            continue
-
-        if o == "i" or o == "." or o == "00":
-            browser()
-            pag_1()
-            p.press("0")
-            pag_2()
-            visual()
-            terminal()
-            continue
-
-        if o == "q" or o == "," or o == "2":
-            browser()
-            pag_1()
-            p.press("2")
-            pag_2()
-            visual()
-            terminal()
-            continue
-
-        if o == "0v" or o == "0'":
-            browser()
-            pag_1()
-            guardar()
-            cerrar_pag_1()
-            visual()
-            cerrar()
-
-        if o == "0c" or o == "09":
-            browser()
-            pag_1()
-            url = guardar()
-            print(url)
-            cerrar()
-            continue
-
-        if o[0:6] == "search":
-            texto = o[6:]
-            browser()
-            nueva_pestana()
-            search_bar()
-            search(texto)
-            continue
-
-        if o[0:2] == "yt":
-            search_yt(o[2:])
-            continue
-
-        if o[0:7] == "youtube":
-            search_yt(o[7:])
             continue
 
         if o == "0" or o == "exit":
             break
+
+        if o == "0c" or o == "09":
+            menu_close_browser()
+            continue
+
+        if o == "0v" or o == "0'":
+            menu_close_vsc()
+
+        # --- extra ---
+
+        if o == "git" or o == "github" or o == "repo":
+            github()
+            continue
+
+        if o[0:6] == "search":
+            texto = o[6:]
+            menu_search_browser(texto)
+            continue
+
+        if o[0:2] == "yt":
+            menu_search_youtube(o[2:])
+            continue
+
+        if o[0:7] == "youtube":
+            menu_search_youtube(o[7:])
+            continue
+
+        # --- help ---
 
         print(
             "====== MAIN ======",
@@ -446,16 +503,17 @@ if __name__ == "__main__":
             "====== VIDEO ======",
             "-  : current video index",
             "00 : initialice video",
-            "5  : half of the video",
             "2  : quarter of the video",
-            "======= APP =======",
-            "g  : save actual video",
-            "0  : exit app",
-            "09 : close browser tab",
-            "0' : close VSC tab",
+            "5  : half of the video",
             "====== LISTS ======",
-            "kk : video list",
             "k  : likes list",
+            "no : video list",
+            "======= APP =======",
+            "s  : save actual video",
+            "h  : help",
+            "0  : exit app",
+            "09 : close browser",
+            "0' : close VSC",
             "====== EXTRA ======",
             "git            : see project repo",
             "search <query> : search on browser",
@@ -468,4 +526,16 @@ if __name__ == "__main__":
     pag_1()
     guardar()
     cerrar()
+    sleep(0.5)
     cerrar()
+
+
+if __name__ == "__main__":
+
+    # CLICK POSITION TESTING
+    if CHECK_POS:
+        pos()
+        exit()
+
+    else:
+        main()
