@@ -116,8 +116,9 @@ def like_old():
     p.click()
 
 
-def like():
-    imagen_click("like-icon")
+def like() -> bool:
+    if not imagen_click("like-icon"):
+        print("Already liked!")
 
 
 def link():
@@ -140,25 +141,30 @@ def search_bar():
 
 def imagen_click(image, confidence=0.8, duration=0.2, region=None, minSearchTime=None):
     try:
-        p.click(
-            p.locateCenterOnScreen(
-                f"media/{image}.png",
-                confidence=confidence,
-                region=region,
-                minSearchTime=minSearchTime,
-            ),
-            duration=duration,
-        )
+        try:
+            p.click(
+                p.locateCenterOnScreen(
+                    f"media/{image}.png",
+                    confidence=confidence,
+                    region=region,
+                    minSearchTime=minSearchTime,
+                ),
+                duration=duration,
+            )
+            return True
+        except:
+            p.click(
+                p.locateCenterOnScreen(
+                    f"media/{image}.png",
+                    confidence=0.75,
+                    region=region,
+                    minSearchTime=2,
+                ),
+                duration=duration,
+            )
+            return True
     except:
-        p.click(
-            p.locateCenterOnScreen(
-                f"media/{image}.png",
-                confidence=0.75,
-                region=region,
-                minSearchTime=2,
-            ),
-            duration=duration,
-        )
+        return False
 
 
 # -------------------options--------------------
