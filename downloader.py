@@ -12,7 +12,7 @@ def sanitize_filename(filename):
     """
     forbidden_chars = '<>:"/\\|?*'
     for char in forbidden_chars:
-        filename = filename.replace(char, '_')
+        filename = filename.replace(char, "_")
     return filename
 
 
@@ -27,33 +27,35 @@ def download_audio_webm(output_dir, video_url):
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(video_url, download=True)
         original_filename = ydl.prepare_filename(info).rsplit(".", 1)[0]
-        
+
         # yt-dlp puede sanitizar el nombre automáticamente
         # Verificar qué archivo se descargó realmente
-        possible_exts = ['.webm', '.m4a', '.opus', '.mp4']
+        possible_exts = [".webm", ".m4a", ".opus", ".mp4"]
         actual_audio_file = None
-        
+
         for ext in possible_exts:
             if os.path.exists(original_filename + ext):
                 actual_audio_file = original_filename + ext
                 break
-        
+
         if not actual_audio_file:
             # Si no se encuentra, buscar con nombre sanitizado
             original_dir = os.path.dirname(original_filename)
             original_basename = os.path.basename(original_filename)
             sanitized_basename = sanitize_filename(original_basename)
             sanitized_filename = os.path.join(original_dir, sanitized_basename)
-            
+
             for ext in possible_exts:
                 if os.path.exists(sanitized_filename + ext):
                     actual_audio_file = sanitized_filename + ext
                     original_filename = sanitized_filename
                     break
-        
+
         if not actual_audio_file:
-            raise FileNotFoundError(f"No se pudo encontrar el archivo descargado. Buscado: {original_filename}")
-        
+            raise FileNotFoundError(
+                f"No se pudo encontrar el archivo descargado. Buscado: {original_filename}"
+            )
+
         # El nombre base sin extensión
         base_name = actual_audio_file.rsplit(".", 1)[0]
         return base_name, info
@@ -77,9 +79,8 @@ def cut_audio(input_path, output_path, start_time, end_time):
 
     try:
         (
-            ffmpeg
-            .input(input_path, ss=start_time, to=end_time)
-            .output(output_path, c='copy')
+            ffmpeg.input(input_path, ss=start_time, to=end_time)
+            .output(output_path, c="copy")
             .overwrite_output()
             .run(capture_stdout=True, capture_stderr=True)
         )
@@ -114,37 +115,36 @@ def convert_to_mp3(input_path, output_path, thumbnail_path, metadata):
         # Crear los inputs
         audio_input = ffmpeg.input(input_path)
         thumb_input = ffmpeg.input(thumbnail_path)
-        
+
         # Crear streams de salida
         audio_stream = audio_input.audio
         video_stream = thumb_input.video
-        
+
         # Construir opciones de salida base
         output_options = {
-            'c:a': 'libmp3lame',
-            'b:a': '320k',
-            'id3v2_version': '3',
+            "c:a": "libmp3lame",
+            "b:a": "320k",
+            "id3v2_version": "3",
         }
-        
+
         # Crear el output combinando ambos streams
         stream = ffmpeg.output(
-            audio_stream,
-            video_stream,
-            output_path,
-            **output_options
+            audio_stream, video_stream, output_path, **output_options
         )
-        
+
         # Agregar metadatos usando global_args (la forma correcta para múltiples metadata)
         for key, value in metadata.items():
-            stream = stream.global_args('-metadata', f'{key}={value}')
-        
+            stream = stream.global_args("-metadata", f"{key}={value}")
+
         # Agregar metadata del stream de video
-        stream = stream.global_args('-metadata:s:v', 'title=Thumbnail')
-        stream = stream.global_args('-metadata:s:v', 'comment=Cover (front)')
-        
+        stream = stream.global_args("-metadata:s:v", "title=Thumbnail")
+        stream = stream.global_args("-metadata:s:v", "comment=Cover (front)")
+
         # Ejecutar
-        ffmpeg.run(stream, overwrite_output=True, capture_stdout=True, capture_stderr=True)
-        
+        ffmpeg.run(
+            stream, overwrite_output=True, capture_stdout=True, capture_stderr=True
+        )
+
     except ffmpeg.Error as e:
         print(f"Error al convertir a MP3: {e.stderr.decode()}")
         raise
@@ -180,15 +180,15 @@ if __name__ == "__main__":
     try:
         base_path, info = download_audio_webm(output_dir, video_url)
         print(f"📁 Archivo base: {base_path}")
-        
+
         webm_path = base_path + ".webm"
         thumb_path = base_path + ".webp"
         mp3_path = base_path + ".mp3"
-        
+
         print(f"🎵 Audio esperado: {webm_path}")
         print(f"🖼️  Thumbnail esperado: {thumb_path}")
         print(f"🎵 MP3 de salida: {mp3_path}")
-        
+
         # Verificar que los archivos existen
         if not os.path.exists(webm_path):
             print(f"⚠️  Archivo de audio no encontrado: {webm_path}")
@@ -200,7 +200,7 @@ if __name__ == "__main__":
                 if basename[:20] in file:
                     print(f"   - {file}")
             raise FileNotFoundError(f"No se encontró el archivo de audio")
-        
+
         if not os.path.exists(thumb_path):
             print(f"⚠️  Thumbnail no encontrado: {thumb_path}")
             # Intentar con .jpg
@@ -232,4 +232,5 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"❌ Error: {e}")
         import traceback
+
         traceback.print_exc()
