@@ -122,7 +122,8 @@ This is a simple YouTube to MP3 downloader using `yt-dlp`, with optional support
   * [https://ffmpeg.org/download.html](https://ffmpeg.org/download.html)
   * [https://www.gyan.dev/ffmpeg/builds/](https://www.gyan.dev/ffmpeg/builds/)
 
-    > Install it using `choco install ffmpeg` on cmd using admin privileges if you have [Chocolatey](https://chocolatey.org/) installed.
+    > Via `winget install ffmpeg` on Windows cmd if you have [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/) installed.
+    > Or install it using `choco install ffmpeg` on cmd using admin privileges if you have [Chocolatey](https://chocolatey.org/) installed.
 
   Ensure that the `ffmpeg` command is available in your system's PATH. You can check this by running:
 

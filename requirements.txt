@@ -4,3 +4,5 @@ yt_dlp
 pywinauto
 pillow
 opencv-python
+ffmpeg-python
+# winget install ffmpeg
